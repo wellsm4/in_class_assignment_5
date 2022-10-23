@@ -25,49 +25,29 @@ The base cases occur when the sublists are either empty or have one element, as 
 
 
 import statistics
-# import pandas
 
 def quicksort(numbers_in_a_list):
-#WRITE YOUR CODE HERE FOR THE RECURSIVE SORTING FUNCTION
 	pivot_item = statistics.median_low(numbers_in_a_list)
 	
-	# print(pivot_item)
 	split_1 = []
 	split_2 = []
-	sorted_list = []
+
+	if len(numbers_in_a_list) <= 1:
+		return numbers_in_a_list
+
 	for num in numbers_in_a_list:
 		if num <= pivot_item:
 			split_1.append(num)
 		else:
 			split_2.append(num)
-	if len(split_1) <= 1 and len(split_2) <= 1:
-		return numbers_in_a_list
-	else:
-		split_1 = quicksort(split_1)
-		split_2 = quicksort(split_2)
+	split_1 = quicksort(split_1)
+	split_2 = quicksort(split_2)
 
-		numbers_in_a_list = split_1 + split_2
+	numbers_in_a_list = split_1 + split_2
 
-		return numbers_in_a_list
-		
-	#print(split_1)
-	#print(split_2)
-	'''
-	print("Length of original list:")
-	print(len(numbers_in_a_list))
-	print("Length of split 1:")
-	print(len(split_1))
-	print("Length of split 2:")
-	print(len(split_2))
-	'''
-#	return #WHAT DOES IT RETURN?
-
+	return numbers_in_a_list
 
 def main():
-
-# WRITE YOUR MAIN FUNCTION HERE TO READ IN YOUR numbers.txt FILE, RUN THE LIST THROUGH YOUR SORTING ALGORITHM, 
-# AND WRITE OUT YOUR FILE
-# return #WHAT DOES IT RETURN?
 	filename = "numbers.txt"
 	with open(filename) as file_object:
 		contents = file_object.read()
@@ -75,9 +55,10 @@ def main():
 	contents = contents.rstrip("]")
 	num_list = contents.split(", ")
 	num_list = list(map(int, num_list))
-	# print(num_list)
-	# quicksort(data.values.tolist())
-	print(quicksort(num_list))
+	sorted_list = quicksort(num_list)
+	sorted_string = ", ".join(str(x) for x in sorted_list)
+	with open("sorted.txt", "w") as out_file:
+		out_file.write(sorted_string)
 
 if __name__ == "__main__":
     main()
